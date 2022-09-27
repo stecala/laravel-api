@@ -15,7 +15,7 @@
             </div>
         </header>
         <main>
-            <PostComponent v-for="post in posts" :key="post.id" :post='post' />
+            <PostComponent v-for="post in posts" :key="post.id" :post='post'  class="my-5"/>
         </main>
     </div>
 </template>
@@ -58,6 +58,7 @@ export default {
         position: fixed;
         width: 100%;
         background-color: white;
+        z-index: 2;
     }
     main{
         padding-top: 105px;
