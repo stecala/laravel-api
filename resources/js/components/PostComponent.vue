@@ -7,7 +7,7 @@
             </h2>
         </div>
         <div class="img-containter mt-3 mx-auto">
-            <img :src="post.img_post" alt="img_post">
+            <img :src=" ValidURL(post.img_post) ? post.img_post : '/storage/app/public/' + post.img_post " alt="img_post">
         </div>
         <div class="col-12 mt-3">
             <span>{{post.description}}</span>
@@ -23,6 +23,16 @@
     export default {
         props:{
             post : Object,
+        },
+        methods: {
+            ValidURL: function(str) {
+                var regex = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+                if(!regex .test(str)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
         }
     }
 </script>

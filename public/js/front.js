@@ -1954,6 +1954,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: Object
+  },
+  methods: {
+    ValidURL: function ValidURL(str) {
+      var regex = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+
+      if (!regex.test(str)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 });
 
@@ -2034,7 +2045,7 @@ var render = function render() {
     staticClass: "img-containter mt-3 mx-auto"
   }, [_c("img", {
     attrs: {
-      src: _vm.post.img_post,
+      src: _vm.ValidURL(_vm.post.img_post) ? _vm.post.img_post : "/storage/app/public/" + _vm.post.img_post,
       alt: "img_post"
     }
   })]), _vm._v(" "), _c("div", {
