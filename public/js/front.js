@@ -1955,7 +1955,7 @@ var render = function render() {
   return _c("div", [_c("h1", [_vm._v("Posts:")]), _vm._v(" "), _c("ul", _vm._l(_vm.posts, function (post) {
     return _c("li", {
       key: post.id
-    }, [_vm._v("\n            " + _vm._s(post.description) + "\n        ")]);
+    }, [_vm._v("\n            " + _vm._s(post.description) + " "), _c("br"), _vm._v(" "), _c("small", [_vm._v(_vm._s(post.user.name))])]);
   }), 0)]);
 };
 

@@ -3,7 +3,8 @@
         <h1>Posts:</h1>
         <ul>
             <li v-for="post in posts" :key="post.id">
-                {{ post.description }}
+                {{ post.description }} <br>
+                <small>{{post.user.name}}</small>
             </li>
         </ul>
     </div>
