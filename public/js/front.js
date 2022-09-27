@@ -2045,7 +2045,7 @@ var render = function render() {
     staticClass: "img-containter mt-3 mx-auto"
   }, [_c("img", {
     attrs: {
-      src: _vm.ValidURL(_vm.post.img_post) ? _vm.post.img_post : "/storage/app/public/" + _vm.post.img_post,
+      src: _vm.ValidURL(_vm.post.img_post) ? _vm.post.img_post : "/storage/" + _vm.post.img_post,
       alt: "img_post"
     }
   })]), _vm._v(" "), _c("div", {
