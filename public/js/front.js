@@ -1919,7 +1919,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      posts: []
+      posts: [],
+      search: null
     };
   },
   methods: {
@@ -1928,7 +1929,17 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/posts').then(function (result) {
-        _this.posts = result.data.results.data;
+        _this.posts = result.data.results.data.data;
+        console.log(result.data.results);
+      })["catch"](function (error) {
+        console.error(error);
+      });
+    },
+    ApiCallFilterPosts: function ApiCallFilterPosts() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/posts?description=' + this.search).then(function (result) {
+        _this2.posts = result.data.results.data.data;
         console.log(result.data.results);
       })["catch"](function (error) {
         console.error(error);
@@ -1985,7 +1996,37 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_vm._m(0), _vm._v(" "), _c("main", _vm._l(_vm.posts, function (post) {
+  return _c("div", [_c("header", [_c("div", {
+    staticClass: "container-lg py-3"
+  }, [_c("div", {
+    staticClass: "row justify-content-between align-items-center"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search,
+      expression: "search"
+    }],
+    attrs: {
+      type: "text",
+      placeholder: "filtro elementi nel post"
+    },
+    domProps: {
+      value: _vm.search
+    },
+    on: {
+      keyup: function keyup($event) {
+        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
+        return _vm.ApiCallFilterPosts();
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.search = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _vm._m(1)])])]), _vm._v(" "), _c("main", _vm._l(_vm.posts, function (post) {
     return _c("PostComponent", {
       key: post.id,
       staticClass: "my-5",
@@ -2000,20 +2041,21 @@ var staticRenderFns = [function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("header", [_c("div", {
-    staticClass: "container-lg py-3"
-  }, [_c("div", {
-    staticClass: "row justify-content-between align-items-center"
-  }, [_c("div", {
+  return _c("div", {
     staticClass: "col-3"
-  }, [_c("h1", [_vm._v("\n                        Boolpress\n                    ")])]), _vm._v(" "), _c("div", {
+  }, [_c("h1", [_vm._v("\n                        Boolpress\n                    ")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
     staticClass: "col-2"
   }, [_c("a", {
     staticClass: "btn btn-info",
     attrs: {
       href: "http://127.0.0.1:8000/admin"
     }
-  }, [_vm._v("Backoffice")])])])])]);
+  }, [_vm._v("Backoffice")])]);
 }];
 render._withStripped = true;
 
@@ -2044,6 +2086,7 @@ var render = function render() {
   }, [_c("h2", {}, [_vm._v("\n            " + _vm._s(_vm.post.user.name) + "\n        ")])]), _vm._v(" "), _c("div", {
     staticClass: "img-containter mt-3 mx-auto"
   }, [_c("img", {
+    staticClass: "w-100",
     attrs: {
       src: _vm.ValidURL(_vm.post.img_post) ? _vm.post.img_post : "/storage/" + _vm.post.img_post,
       alt: "img_post"

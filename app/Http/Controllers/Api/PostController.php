@@ -13,9 +13,13 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts= Post::with('user')->get();
+        $description=$request->query('description');
+        
+        $posts= Post::with('user')->where('description', 'like' , '%' . $description . '%')->paginate(10);
+        
+        
         return response()->json([
             'response'=>true,
             'count'=>count($posts),
@@ -23,6 +27,7 @@ class PostController extends Controller
                     'data'=>$posts
                 ]
         ]);
+
     }
 
     /**
