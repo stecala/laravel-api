@@ -7,7 +7,7 @@
             </h2>
         </div>
         <div class="img-containter mt-3 mx-auto">
-            <img :src=" ValidURL(post.img_post) ? post.img_post : '/storage/' + post.img_post " alt="img_post">
+            <img :src=" ValidURL(post.img_post) ? post.img_post : '/storage/' + post.img_post " alt="img_post" class="w-100">
         </div>
         <div class="col-12 mt-3">
             <span>{{post.description}}</span>

@@ -8,6 +8,9 @@
                             Boolpress
                         </h1>
                     </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="filtro elementi nel post" @keyup.enter="ApiCallFilterPosts()" v-model="search">
+                    </div>
                     <div class="col-2">
                         <a href="http://127.0.0.1:8000/admin" class="btn btn-info">Backoffice</a>
                     </div>
@@ -30,7 +33,7 @@ export default {
     data: function(){
         return{
             posts: [],
-
+            search: null,
         }
     },
     methods: {
@@ -38,7 +41,17 @@ export default {
         ApiCallPosts(){
             axios.get('/api/posts')
             .then((result)=>{
-                this.posts=result.data.results.data
+                this.posts=result.data.results.data.data
+                console.log(result.data.results)
+            })
+            .catch((error)=>{
+                console.error(error)
+            })
+        },
+        ApiCallFilterPosts(){
+            axios.get('/api/posts?description=' + this.search)
+            .then((result)=>{
+                this.posts=result.data.results.data.data
                 console.log(result.data.results)
             })
             .catch((error)=>{
