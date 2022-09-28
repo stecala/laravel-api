@@ -1920,26 +1920,54 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       posts: [],
-      search: null
+      search: '',
+      urlNext: '',
+      ulrPrev: ''
     };
   },
   methods: {
     //! creo una funzione per effetuare la chiamata API
-    ApiCallPosts: function ApiCallPosts() {
+    //! funzione per la chiamata filtrata
+    ApiCallFilterPosts: function ApiCallFilterPosts() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/posts').then(function (result) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/posts?description=' + this.search).then(function (result) {
         _this.posts = result.data.results.data.data;
+        _this.urlNext = result.data.results.data.next_page_url;
+        _this.urlPrev = result.data.results.data.last_page_url;
         console.log(result.data.results);
       })["catch"](function (error) {
         console.error(error);
       });
     },
-    ApiCallFilterPosts: function ApiCallFilterPosts() {
+    //! funzione per scorrere nella pagina successiva
+    goNextPage: function goNextPage() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/posts?description=' + this.search).then(function (result) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.urlNext).then(function (result) {
         _this2.posts = result.data.results.data.data;
+        _this2.urlNext = result.data.results.data.next_page_url;
+
+        if (_this2.urlNext == null) {
+          _this2.urlNext = result.data.results.data.first_page_url;
+        }
+
+        console.log(result.data.results);
+      })["catch"](function (error) {
+        console.error(error);
+      });
+    },
+    goPrevPage: function goPrevPage() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.urlPrev).then(function (result) {
+        _this3.posts = result.data.results.data.data;
+        _this3.urlPrev = result.data.results.data.prev_page_url;
+
+        if (_this3.urlPrev == null) {
+          _this3.urlPrev = result.data.results.data.last_page_url;
+        }
+
         console.log(result.data.results);
       })["catch"](function (error) {
         console.error(error);
@@ -1947,7 +1975,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.ApiCallPosts();
+    this.ApiCallFilterPosts();
   }
 });
 
@@ -1996,7 +2024,23 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_c("header", [_c("div", {
+  return _c("div", [_c("header", {
+    staticClass: "position-relative"
+  }, [_c("div", {
+    staticClass: "prev-page btn btn-info",
+    on: {
+      click: function click($event) {
+        return _vm.goPrevPage();
+      }
+    }
+  }, [_vm._v("\n            Prev Page\n        ")]), _vm._v(" "), _c("div", {
+    staticClass: "next-page btn btn-info",
+    on: {
+      click: function click($event) {
+        return _vm.goNextPage();
+      }
+    }
+  }, [_vm._v("\n            Next Page\n        ")]), _vm._v(" "), _c("div", {
     staticClass: "container-lg py-3"
   }, [_c("div", {
     staticClass: "row justify-content-between align-items-center"
@@ -2116,7 +2160,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "header[data-v-332fccf4] {\n  box-shadow: 5px 0 10px rgba(0, 0, 0, 0.527);\n  position: fixed;\n  width: 100%;\n  background-color: white;\n  z-index: 2;\n}\nmain[data-v-332fccf4] {\n  padding-top: 105px;\n}", ""]);
+exports.push([module.i, "header[data-v-332fccf4] {\n  box-shadow: 5px 0 10px rgba(0, 0, 0, 0.527);\n  position: fixed;\n  width: 100%;\n  background-color: white;\n  z-index: 2;\n}\nheader .prev-page[data-v-332fccf4], header .next-page[data-v-332fccf4] {\n  box-shadow: 5px 5px 5px black;\n  position: absolute;\n  border-radius: 10px;\n}\nheader .prev-page[data-v-332fccf4] {\n  top: 20%;\n  left: 10%;\n}\nheader .next-page[data-v-332fccf4] {\n  top: 20%;\n  right: 10%;\n}\nmain[data-v-332fccf4] {\n  padding-top: 105px;\n}", ""]);
 
 // exports
 

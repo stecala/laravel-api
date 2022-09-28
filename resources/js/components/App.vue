@@ -1,6 +1,12 @@
 <template>
     <div>
-        <header>
+        <header class="position-relative">
+            <div class="prev-page btn btn-info" @click="goPrevPage()">
+                Prev Page
+            </div>
+            <div class="next-page btn btn-info" @click="goNextPage()">
+                Next Page
+            </div>
             <div class="container-lg py-3">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-3">
@@ -33,34 +39,58 @@ export default {
     data: function(){
         return{
             posts: [],
-            search: null,
+            search: '',
+            urlNext : '',
+            ulrPrev : '',
         }
     },
     methods: {
     //! creo una funzione per effetuare la chiamata API
-        ApiCallPosts(){
-            axios.get('/api/posts')
+    //! funzione per la chiamata filtrata
+        ApiCallFilterPosts(){
+            axios.get('/api/posts?description=' + this.search)
             .then((result)=>{
                 this.posts=result.data.results.data.data
+                this.urlNext=result.data.results.data.next_page_url
+                this.urlPrev=result.data.results.data.last_page_url
                 console.log(result.data.results)
             })
             .catch((error)=>{
                 console.error(error)
             })
         },
-        ApiCallFilterPosts(){
-            axios.get('/api/posts?description=' + this.search)
+    //! funzione per scorrere nella pagina successiva
+        goNextPage(){
+            axios.get(this.urlNext)
             .then((result)=>{
                 this.posts=result.data.results.data.data
+                this.urlNext=result.data.results.data.next_page_url
+                if(this.urlNext==null){
+                    this.urlNext=result.data.results.data.first_page_url
+                }
                 console.log(result.data.results)
             })
             .catch((error)=>{
                 console.error(error)
             })
-        }
+        },          
+        goPrevPage(){
+            axios.get(this.urlPrev)
+            .then((result)=>{
+                this.posts=result.data.results.data.data
+                this.urlPrev=result.data.results.data.prev_page_url
+                if(this.urlPrev==null){
+                    this.urlPrev=result.data.results.data.last_page_url
+                }
+                console.log(result.data.results)
+            })
+            .catch((error)=>{
+                console.error(error)
+            })
+        },
     },
     created (){
-        this.ApiCallPosts()
+        this.ApiCallFilterPosts()
     }
 }
 </script>
@@ -72,6 +102,19 @@ export default {
         width: 100%;
         background-color: white;
         z-index: 2;
+        .prev-page, .next-page{
+            box-shadow: 5px 5px 5px black;
+            position: absolute;
+            border-radius: 10px;
+        }
+        .prev-page{
+            top: 20%;
+            left: 10%;
+        }
+        .next-page{
+            top: 20%;
+            right: 10%;
+        }
     }
     main{
         padding-top: 105px;
